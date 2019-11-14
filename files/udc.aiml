@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+    <!-- 1 - DÃª Oi e saiba o nome da pessoa-->
+    <category>
+        <pattern>$OI ^</pattern>
+        <template>OlÃ¡! Como vocÃª chama?</template>
+    </category>
+    <category>
+        <pattern>$OLÃ ^</pattern>
+        <template>OlÃ¡! Como vocÃª chama?</template>
+    </category>
+    <category>
+        <pattern>*</pattern>
+        <that>COMO VOCÃ CHAMA</that> 
+        <template>Fala aÃ­ <set name="NomeDaPessoa"><star /></set>, como posso te ajudar?</template>
+    </category>
+    <category>
+        <pattern>^ MEU ^ NOME ^</pattern>
+        <template>
+        <random>
+            <li><get name="NomeDaPessoa"/>!</li>
+            <li>Seu nome Ã© <get name="NomeDaPessoa"/></li>
+            <li>TÃ¡ esquecido hein <get name="NomeDaPessoa"/></li>
+        </random>
+        </template>
+    </category>
+    <category>
+        <pattern>$MEU NOME Ã *</pattern>
+        <template>Fala aÃ­ <set name="NomeDaPessoa"><star /></set>, como posso te ajudar?</template>
+    </category>
+
+    <!-- 2 - Conte de um nÃºmero (0 atÃ© 20) atÃ© outro nÃºmero (0 atÃ© 20). Para simplificar o problema, 
+    vocÃª pode assumir que o segundo nÃºmero Ã© sempre maior que o primeiro. -->
+   
+    <category>
+        <pattern>$CONTE DE <set>number</set> ATÃ <set>number</set></pattern>
+        <template>
+            <think><set var="valid"><srai>XLE <star index="2" /> XS 20</srai></set></think>
+            <think><set name="count"><map><name>predecessor</name><star /></map></set></think> 
+            <condition name="valid">
+                <li value="TRUE">
+                    <condition name="count">
+                        <li><value><star index="2"/></value></li>
+                        <li>
+                            <set name="count">
+                                <map><name>successor</name><get name="count"/></map>
+                            </set>
+                            <condition name="count">
+                                <li><value><star index="2"/></value></li>
+                                <li>, </li>
+                            </condition>
+                            <loop/>
+                        </li>
+                    </condition>
+                </li> 
+            </condition>
+        </template>
+    </category>  
+   
+    <!-- 3 - Nunca deve responder "I have no answer for that" e sim "NÃ£o entendi, pode falar de outra forma?", 
+    por exemplo: you: Se jaca fura o pneu da minha bicileta, o azul cai no chÃ£o? bot: NÃ£o entendi, pode falar de outra forma?  -->
+    <category>
+        <pattern>*</pattern>
+        <template>NÃ£o entendi, pode repetir?</template>
+    </category> 
+                      
+</aiml>
